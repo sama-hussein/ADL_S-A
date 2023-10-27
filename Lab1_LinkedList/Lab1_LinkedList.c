@@ -1,9 +1,8 @@
 // Lab1_LinkedList.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
-#include <iostream>
-#include <stdlib.h>
 #include "StackLinkedList.h"
+//#include <stdio.h>
+//#include <stdlib.h>
 
 int main()
 {
@@ -46,57 +45,81 @@ int main()
 	return 0;
 }
 
-
-sElement* push(sElement* last) {
-	sElement* newElem;
-	sCar* newCar;
-
-	newCar = (sElement*)malloc(sizeof(sElement));
-	newElem = (sCar*)malloc(sizeof(sCar));
-
+sElement* push(sElement* last) 
+{	
+	// Create a new car
+	sCar* newCar = (sCar*)malloc(sizeof(sCar));
 	if (newCar == NULL)
 	{
 		printf("Memory allocation failed\n");
 		exit(1);
 	}
+	sElement* newElem;
+	newElem = (sElement*)malloc(sizeof(sElement));
+	if (newElem == NULL) 
+	{
+		printf("Memory allocation failed\n");
+		exit(0);
+	}
+	// Prompt the user for input
+	printf("Enter brand: ");
+	scanf("%s", newCar->brand);
+	printf("Enter license plate: ");
+	scanf("%s", newCar->licensePlate);
 	//Linking
 	newElem->car = newCar;
 	newElem->prev = last;
-
-	//Return
 	return newElem;
 }
 
 sElement* pop(sElement* last) 
 {
-	sElement* temp = last;
-	last = last -> prev;
-	free(temp);
+	if (isEmpty(last) == 0) {
+		printf("Stack is emtpy\n\n");
+		return NULL;
+	}
+	// Print last element
+	printf("Last element:\n");
+	printf("Brand: %s\n", last->car->brand);
+	printf("License Plate: %s\n", last->car->licensePlate);
+	// Remove the last element
+	sElement* newLast = last->prev;
+	free(last->car);
+	free(last);
+	return newLast;
 }
 
-//prev of first element must be sit to null
 int isEmpty(sElement* last) {
-	//if(last == NULL)
-
-	//if last->next == null
+	if (last == NULL)
+		return 0;
+	else
+		return 1;
 }
 
-int countElements(sElement* last) { //only pass the pointer to the last element
+int countElements(sElement* last) { 
+	// First, check whether the list is empty or not
 	if (isEmpty(last) == 0)
+	{
+		printf("Stack is empty");
 		return 0;
+	}
+	int cnt = 0;
 	sElement* temp = last;
-	int number = 0;
-	while (temp != NULL) {
-		number++;
+	while (temp != NULL)
+	{
+		cnt++;
 		temp = temp->prev;
 	}
-	return number;
+	return cnt;
 }
 
 void printStack(sElement* last) {
+	//printf("Hiiiiiiiiiiiiiiiiiiiii");
 	if (isEmpty(last) == 0)
+	{
 		printf("Stack is empty.\n");
 		return;
+	}
 	sElement* temp = last;
 	int number = countElements(last);
 	while (temp != NULL) {
