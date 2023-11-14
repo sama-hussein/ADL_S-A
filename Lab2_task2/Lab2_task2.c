@@ -29,13 +29,13 @@ void printArray(int arr[]);
 int main()
 {
 	int arr[] = {5,7,3,9,2,10,11,3,12,11};
-	//InsertionSort(arr);
+	InsertionSort(arr);
 	//SelectionSort(arr);
 	//ShellSort(arr);
 	//mergesort(arr, 0, MAX_SIZE-1);
 	//mergesortBU(arr, MAX_SIZE);
-	quicksort(arr, 0, MAX_SIZE-1);
-	printArray(arr);
+	//quicksort(arr, 0, MAX_SIZE-1);
+	//printArray(arr);
 
 }
 
@@ -59,6 +59,8 @@ void InsertionSort(int arr[]) // swaps the element until its correct position
 			}
 			j--;
 		}
+		printArray(arr);
+		putchar('\n');
 		i++;
 		
 	}
@@ -112,16 +114,10 @@ void ShellSort(int arr[])
 /*+++++++++++++++++++++++++++++++ Bottom up Merge Sort +++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Iterative mergesort function to sort arr[0...n-1] */
 void mergesortBU(int array[], int arraySize) {
-	// For current size of subarrays to be merged
-	// curr_size varies from 1 to n/2
+
 	int currSize;
-	// For picking starting index of left subarray
-	// to be merged
 	int leftStart;
 
-	// Merge subarrays in bottom up manner. First merge subarrays of
-	// size 1 to create sorted subarrays of size 2, then merge subarrays
-	// of size 2 to create sorted subarrays of size 4, and so on.
 	for (currSize = 1; currSize <= arraySize - 1; currSize = 2 * currSize) {
 		// Pick starting point of different subarrays of current size
 		for (leftStart = 0; leftStart < arraySize - 1; leftStart += 2 * currSize) {
@@ -238,9 +234,7 @@ void mergesort(int array[], int l, int r) {
 	printArray(array);
 }
 
-// Merges two subarrays of arr[].
-// First subarray is arr[l..m]
-// Second subarray is arr[m+1..r]
+// Merges two subarrays of arr[]. First subarray is arr[l..m]. Second subarray is arr[m+1..r]
 void merge(int array[], int l, int m, int r) {
 	int i, j, k;
 	int leftSize = m - l + 1;
@@ -249,7 +243,6 @@ void merge(int array[], int l, int m, int r) {
 	int comp_count = 0;
 	int exch_count = 0;
 
-	/* create temp arrays */
 	int leftArray[MAX_SIZE], rightArray[MAX_SIZE];
 
 	/* Copy data to temp arrays leftArray[] and rightArray[] */
