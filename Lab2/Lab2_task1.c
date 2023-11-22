@@ -4,64 +4,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_SIZE 20
-#define K 5         // not required in the lab, but necessary for the code to work!
 
+void swap(int array[], int i, int j)
+{
+    int temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+}
 
-void moveElementsToEnd(int arr[], int indices[], int numIndices) {
-    int size = MAX_SIZE;
-    for (int i = 0; i < numIndices; i++) {
-        int sourceIndex = indices[i];
+void moveElementToEnd(int arr[], int randomIndex) {
 
-        // Save the element to be moved
-        int elementToMove = arr[sourceIndex];
-
-        // Shift the elements to make space for the element to be moved
-        for (int j = sourceIndex; j < size - 1; j++) {
-            arr[j] = arr[j + 1];
-        }
-
-        // Place the element at the end
-        arr[size - 1] = elementToMove;
-
-        // Adjust the size since the element is moved to the end
-        size--;
+    // Shift the elements to make space for the element to be moved
+    for (int j = randomIndex; j < MAX_SIZE - 1; j++) {
+        swap(arr, j, j + 1);
     }
 }
 
 
-void initArray(int arr[])
-{
-    int size = MAX_SIZE;
-
-    // Initializing the array
-    for (int i = 0; i < size; i++)
-    {
-        arr[i] = i + 1;
-    }
-    int indicesToMove[K]; // Array of K elements to be removed.
-
-    // Generating the random indices of elements to move to the end
-    srand((unsigned)time(NULL));
-
-    int x = 0;
-    for (int i = 0; i < K ; i++) {
-        indicesToMove[i] = rand() % (MAX_SIZE - x);
-        x++;
-        printf("%d ", indicesToMove[i]);
+void initArray(int array[], int k) {
+    for (int i = 0; i < MAX_SIZE; i++) {
+        array[i] = i + 1;
     }
 
-    int numIndices = sizeof(indicesToMove) / sizeof(indicesToMove[0]);
+    if (k >= MAX_SIZE) {
+        return;
+    }
 
-    moveElementsToEnd(arr, indicesToMove, numIndices);
-
+    srand(time(NULL));
+    for (int i = 0; i < k; i++) {
+        int randomIndex = i + rand() % (MAX_SIZE - i);
+        moveElementToEnd(array, randomIndex);
+    }
 }
 
 
 int main() {
     
     int arr[MAX_SIZE];
+    int k = 3;
 
-    initArray(arr);
+    initArray(arr, k);
     putchar('\n');
 
     // Print the modified array

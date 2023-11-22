@@ -3,10 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_SIZE 10
+#define MAX_SIZE 6
 
 // Declare global variables for counters in Task 3
-
 
 int comp_count = 0;
 int exch_count = 0;
@@ -28,22 +27,21 @@ void printArray(int arr[]);
 
 int main()
 {
-	int arr[] = {5,7,3,9,2,10,11,3,12,11};
-	InsertionSort(arr);
-	//SelectionSort(arr);
+	int arr[] = {2,5,7,3,1,6};
+	SelectionSort(arr);
+	printArray(arr);
+
 	//ShellSort(arr);
+	//InsertionSort(arr);
 	//mergesort(arr, 0, MAX_SIZE-1);
 	//mergesortBU(arr, MAX_SIZE);
 	//quicksort(arr, 0, MAX_SIZE-1);
-	//printArray(arr);
 
 }
 
 // Functions Implementation
 void InsertionSort(int arr[]) // swaps the element until its correct position
 {
-	int comp_count = 0;
-	int exch_count = 0;
 
 	int i = 1;
 	int j = 0;
@@ -64,34 +62,32 @@ void InsertionSort(int arr[]) // swaps the element until its correct position
 		i++;
 		
 	}
-	printArray(arr);
 	printf("%d comparisons, %d exhanges \n\n", comp_count, exch_count);
 }
 
 void SelectionSort(int arr[]) // hold 1st element, search for the smallest and put it in the right place
 {
-	// what causes the overhead? 
-	int comp_count = 0;
-	int exch_count = 0;
+	int i, j, min_index;
 
-	for (int i = 0; i < MAX_SIZE; i++) {
-		int min = i;
-		for (int j = i + 1; j < MAX_SIZE; j++) {
-			comp_count++;
-			if (less(arr[j], arr[min]))
-				min = j;
+	// Traverse through all array elements
+	for (i = 0; i < MAX_SIZE - 1; i++) {
+		// Find the minimum element in the remaining unsorted array
+		min_index = i;
+		for (j = i + 1; j < MAX_SIZE; j++) {
+			if (arr[j] < arr[min_index]) {
+				min_index = j;
+			}
 		}
-		swap(arr, i, min);
-		exch_count++;
+
+		// Swap the found minimum element with the first element
+		int temp = arr[i];
+		arr[i] = arr[min_index];
+		arr[min_index] = temp;
 	}
-	printArray(arr);
-	printf("%d comparisons, %d exhanges \n\n", comp_count, exch_count);
 }
 
 void ShellSort(int arr[]) 
 {
-	int comp_count = 0;
-	int exch_count = 0;
 
 	for (int interval = MAX_SIZE / 2; interval > 0; interval /= 2) {
 		for (int i = interval; i < MAX_SIZE; i++) {
@@ -188,7 +184,9 @@ void mergeBU(int array[], int l, int m, int r) {
 }
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-int partition(int array[], int low, int high) {
+int partition(int array[], int low, int high) 
+{
+	
 	int pivot = array[high]; // Choose the last element as the pivot
 	int i = low - 1; // Index of smaller element
 
@@ -208,7 +206,8 @@ int partition(int array[], int low, int high) {
 	return i + 1;
 }
 
-void quicksort(int array[], int low, int high) {
+void quicksort(int array[], int low, int high) 
+{
 	if (low < high) {
 		// Partition the array and get the pivot index
 		int pivotIndex = partition(array, low, high);
@@ -226,12 +225,12 @@ void mergesort(int array[], int l, int r) {
 	// End of recursion reached?
 	if (l >= r)
 		return;
-
 	int m = l + (r - l) / 2;
 	mergesort(array, l, m);
 	mergesort(array, m + 1, r);
 	merge(array, l, m, r);
-	printArray(array);
+	//printArray(array);
+	//printf("%d \n", );;
 }
 
 // Merges two subarrays of arr[]. First subarray is arr[l..m]. Second subarray is arr[m+1..r]
@@ -239,9 +238,6 @@ void merge(int array[], int l, int m, int r) {
 	int i, j, k;
 	int leftSize = m - l + 1;
 	int rightSize = r - m;
-
-	int comp_count = 0;
-	int exch_count = 0;
 
 	int leftArray[MAX_SIZE], rightArray[MAX_SIZE];
 
@@ -260,10 +256,10 @@ void merge(int array[], int l, int m, int r) {
 	k = l;
 
 	while ((i < leftSize) && (j < rightSize)) {
+		comp_count++;
 		if (leftArray[i] <= rightArray[j]) {
 			array[k] = leftArray[i];
 			i++;
-			comp_count++;
 		}
 		else {
 			array[k] = rightArray[j];
@@ -278,6 +274,7 @@ void merge(int array[], int l, int m, int r) {
 		array[k] = leftArray[i];
 		i++;
 		k++;
+		exch_count++;
 	}
 
 	/* Copy the remaining elements of R[], if there
@@ -286,7 +283,10 @@ void merge(int array[], int l, int m, int r) {
 		array[k] = rightArray[j];
 		j++;
 		k++;
+		exch_count++;
 	}
+	// prints with every recursive call????????? need only the last value.....
+	printf("%d comparisons, %d exhanges \n\n", comp_count, exch_count);
 }
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
