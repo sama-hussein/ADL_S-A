@@ -1,13 +1,14 @@
-// Lab2_task2.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_SIZE 6
+#include <time.h>
 
-// Declare global variables for counters in Task 3
+#define MAX_SIZE 100
+
+// Declare global variables for counters
 int comp_count = 0;
 int exch_count = 0;
+int k = 100;
 
 // Prototypes
 void InsertionSort(int arr[]);
@@ -23,67 +24,89 @@ void swap(int array[], int i, int j);
 int less(int i, int j);
 int isSorted(int array[]);
 void printArray(int arr[]);
+void initArray(int array[], int k);
+void moveElementToEnd(int arr[], int randomIndex);
 
 int main()
 {
-	int arr[] = {2,5,7,3,1,6};
+	long long array[MAX_SIZE]; // array size can't be variable
+	int MAX_SIZES[] = {100, 200, 500 , 1000};
+	
+	for (int i = 0; i < 5; i++)
+	{
+		printf("\n run number: %d \n", i + 1);
+		for (int i = 0; i < 4; i++)
+		{
+			k = MAX_SIZES[i];
+			printf("\n K = MAX_SIZE = %d \n", k);
+			initArray(array, k);
+			//SelectionSort(array);
+			//mergesort(array, 0, MAX_SIZE-1); 
+			InsertionSort(array);
 
-	// To try one algorithm, we need to comment the rest
-	SelectionSort(arr);
-	printArray(arr);
-
+		}
+	}
 	//ShellSort(arr);
-	//InsertionSort(arr);
 	//mergesort(arr, 0, MAX_SIZE-1);
 	//mergesortBU(arr, MAX_SIZE);
 	//quicksort(arr, 0, MAX_SIZE-1);
-
 }
 
 // Functions Implementation
 void InsertionSort(int arr[]) // swaps the element until its correct position
 {
+	int comp = 0;
+	int exch = 0;
 
 	int i = 1;
 	int j = 0;
-	while (i < MAX_SIZE) 
+	while (i < MAX_SIZE)
 	{
 		j = i;
 		while (j > 0) {
-			comp_count++;
-			if((arr[j - 1] > arr[j]))
-			{ 
+			comp++;
+			if ((arr[j - 1] > arr[j]))
+			{
 				swap(arr, j, j - 1);
-				exch_count++;
+				exch++;
 			}
 			j--;
 		}
-		printArray(arr);
-		putchar('\n');
 		i++;
-		
 	}
-	printf("%d comparisons, %d exhanges \n\n", comp_count, exch_count);
+	printf("%d comparisons, %d exhanges \n\n", comp, exch);
 }
 
-void SelectionSort(int arr[])
+void SelectionSort(int arr[]) // hold 1st element, search for the smallest and put it in the right place
 {
 	int i, j, min_index;
+	int comp_count = 0;
+	double cpu_time_used;
 
+	clock_t start = clock();
 	for (i = 0; i < MAX_SIZE - 1; i++) {
 		min_index = i;
+
 		for (j = i + 1; j < MAX_SIZE; j++) {
 			comp_count++;
 			if (arr[j] < arr[min_index]) {
 				min_index = j;
 			}
 		}
-		exch_count++;
 		swap(arr, i, min_index);
+		clock_t end = clock();
+
+		// Check elapsed time after each iteration
+		cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+		if (cpu_time_used > 300.0) {
+			break;
+		}
 	}
+
+	printf("Selection Sort: %lf seconds, %d comparisons", cpu_time_used, comp_count);
 }
 
-void ShellSort(int arr[]) 
+void ShellSort(int arr[])
 {
 	for (int interval = MAX_SIZE / 2; interval > 0; interval /= 2) {
 		for (int i = interval; i < MAX_SIZE; i++) {
@@ -103,7 +126,6 @@ void ShellSort(int arr[])
 	printf("%d comparisons, %d exhanges \n\n", comp_count, exch_count);
 }
 
-/*+++++++++++++++++++++++++++++++ Bottom up Merge Sort +++++++++++++++++++++++++++++++++++++++++++++++*/
 void mergesortBU(int array[], int arraySize) {
 
 	int currSize;
@@ -118,7 +140,6 @@ void mergesortBU(int array[], int arraySize) {
 		}
 	}
 	printArray(array);
-
 }
 
 // Function to merge the two halves of array arr[] 
@@ -169,10 +190,9 @@ void mergeBU(int array[], int l, int m, int r) {
 	printf("%d comparisons, %d exhanges \n\n", comp_count, exch_count);
 }
 
-/*+++++++++++++++++++++++++++++++++++ Quick Sort +++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-int partition(int array[], int low, int high) 
+int partition(int array[], int low, int high)
 {
-	
+
 	int pivot = array[high]; // Choose the last element as the pivot
 	int i = low - 1; // Index of smaller element
 
@@ -191,12 +211,11 @@ int partition(int array[], int low, int high)
 	return i + 1;
 }
 
-void quicksort(int array[], int low, int high) 
+void quicksort(int array[], int low, int high)
 {
 	if (low < high) {
 		// Partition the array and get the pivot index
 		int pivotIndex = partition(array, low, high);
-
 		// Recursively sort the subarrays
 		quicksort(array, low, pivotIndex - 1);
 		quicksort(array, pivotIndex + 1, high);
@@ -204,7 +223,6 @@ void quicksort(int array[], int low, int high)
 
 }
 
-/*+++++++++++++++++++++++++++++++ Merge Sort +++++++++++++++++++++++++++++++++++++++++++++++*/
 void mergesort(int array[], int l, int r) {
 	if (l >= r)
 		return;
@@ -216,27 +234,27 @@ void mergesort(int array[], int l, int r) {
 }
 
 // Merges two subarrays of arr[]. First subarray is arr[l..m]. Second subarray is arr[m+1..r]
+
 void merge(int array[], int l, int m, int r) {
-	int i, j, k;
+	int i, j, k, comp_count = 0;
 	int leftSize = m - l + 1;
 	int rightSize = r - m;
 
 	int leftArray[MAX_SIZE], rightArray[MAX_SIZE];
 
-	/* Copy data to temp arrays leftArray[] and rightArray[] */
+	double cpu_time_used;
+
+	//Copy data to temp arrays
 	for (i = 0; i < leftSize; i++)
 		leftArray[i] = array[l + i];
 	for (j = 0; j < rightSize; j++)
 		rightArray[j] = array[m + 1 + j];
 
-	// Merge the temp arrays back into array
-	// Initial index of first subarray
 	i = 0;
-	// Initial index of second subarray
 	j = 0;
-	// Initial index of merged subarray
 	k = l;
 
+	clock_t start = clock();
 	while ((i < leftSize) && (j < rightSize)) {
 		comp_count++;
 		if (leftArray[i] <= rightArray[j]) {
@@ -248,28 +266,29 @@ void merge(int array[], int l, int m, int r) {
 			j++;
 		}
 		k++;
-		exch_count++;
+		clock_t end = clock();
+
+		// Check elapsed time after each iteration
+		cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+		if (cpu_time_used > 300.0) {
+			break;
+		}
+		printf("\n Merge Sort: %lf seconds, %d comparisons", cpu_time_used, comp_count);
 	}
 
-	// Copy the remaining elements of left array, if there are any
 	while (i < leftSize) {
 		array[k] = leftArray[i];
 		i++;
 		k++;
-		exch_count++;
 	}
 
-	// Copy the remaining elements of right array, if there are any
 	while (j < rightSize) {
 		array[k] = rightArray[j];
 		j++;
 		k++;
-		exch_count++;
 	}
 	// prints with every recursive call????????? need only the last value.....
-	printf("%d comparisons, %d exhanges \n\n", comp_count, exch_count);
 }
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 // Helper Functions
 void swap(int array[], int i, int j)
@@ -299,3 +318,28 @@ void printArray(int arr[])
 	}
 	putchar('\n');
 }
+
+void initArray(int array[], int k) {
+	for (int i = 0; i < MAX_SIZE; i++) {
+		array[i] = i + 1;
+	}
+
+	if (k >= MAX_SIZE) {
+		return;
+	}
+
+	srand(time(NULL));
+	for (int i = 0; i < k; i++) {
+		int randomIndex = i + rand() % (MAX_SIZE - i);
+		moveElementToEnd(array, randomIndex);
+	}
+}
+// Function keeps swaping the value k with each element until the end of the array
+void moveElementToEnd(int arr[], int randomIndex) {
+
+	// Shift the elements to make space for the element to be moved
+	for (int j = randomIndex; j < MAX_SIZE - 1; j++) {
+		swap(arr, j, j + 1);
+	}
+}
+

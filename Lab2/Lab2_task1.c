@@ -12,6 +12,7 @@ void swap(int array[], int i, int j)
     array[j] = temp;
 }
 
+// Function keeps swaping the value k with each element until the end of the array
 void moveElementToEnd(int arr[], int randomIndex) {
 
     // Shift the elements to make space for the element to be moved
@@ -19,7 +20,6 @@ void moveElementToEnd(int arr[], int randomIndex) {
         swap(arr, j, j + 1);
     }
 }
-
 
 void initArray(int array[], int k) {
     for (int i = 0; i < MAX_SIZE; i++) {

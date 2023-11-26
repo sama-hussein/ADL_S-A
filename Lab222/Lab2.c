@@ -1,6 +1,58 @@
-// Lab2_task2.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/************************************************************ Task 1 ************************************************************/
 
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_SIZE 20
+
+void swap(int array[], int i, int j)
+{
+	int temp = array[i];
+	array[i] = array[j];
+	array[j] = temp;
+}
+
+// Function keeps swaping the value k with each element until the end of the array
+void moveElementToEnd(int arr[], int randomIndex) {
+
+	// Shift the elements to make space for the element to be moved
+	for (int j = randomIndex; j < MAX_SIZE - 1; j++) {
+		swap(arr, j, j + 1);
+	}
+}
+
+void initArray(int array[], int k) {
+	for (int i = 0; i < MAX_SIZE; i++) {
+		array[i] = i + 1;
+	}
+
+	if (k >= MAX_SIZE) {
+		return;
+	}
+
+	srand(time(NULL));
+	for (int i = 0; i < k; i++) {
+		int randomIndex = i + rand() % (MAX_SIZE - i);
+		moveElementToEnd(array, randomIndex);
+	}
+}
+
+
+int main() {
+
+	int arr[MAX_SIZE];
+	int k = 3;
+
+	initArray(arr, k);
+	putchar('\n');
+
+	// Print the modified array
+	for (int i = 0; i < MAX_SIZE; i++) {
+		printf("%d ", arr[i]);
+	}
+	return 0;
+}
+
+/************************************************************ Task 2 ************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_SIZE 6
@@ -26,7 +78,7 @@ void printArray(int arr[]);
 
 int main()
 {
-	int arr[] = {2,5,7,3,1,6};
+	int arr[] = { 2,5,7,3,1,6 };
 
 	// To try one algorithm, we need to comment the rest
 	SelectionSort(arr);
@@ -46,13 +98,13 @@ void InsertionSort(int arr[]) // swaps the element until its correct position
 
 	int i = 1;
 	int j = 0;
-	while (i < MAX_SIZE) 
+	while (i < MAX_SIZE)
 	{
 		j = i;
 		while (j > 0) {
 			comp_count++;
-			if((arr[j - 1] > arr[j]))
-			{ 
+			if ((arr[j - 1] > arr[j]))
+			{
 				swap(arr, j, j - 1);
 				exch_count++;
 			}
@@ -61,7 +113,7 @@ void InsertionSort(int arr[]) // swaps the element until its correct position
 		printArray(arr);
 		putchar('\n');
 		i++;
-		
+
 	}
 	printf("%d comparisons, %d exhanges \n\n", comp_count, exch_count);
 }
@@ -83,7 +135,7 @@ void SelectionSort(int arr[])
 	}
 }
 
-void ShellSort(int arr[]) 
+void ShellSort(int arr[])
 {
 	for (int interval = MAX_SIZE / 2; interval > 0; interval /= 2) {
 		for (int i = interval; i < MAX_SIZE; i++) {
@@ -170,9 +222,9 @@ void mergeBU(int array[], int l, int m, int r) {
 }
 
 /*+++++++++++++++++++++++++++++++++++ Quick Sort +++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-int partition(int array[], int low, int high) 
+int partition(int array[], int low, int high)
 {
-	
+
 	int pivot = array[high]; // Choose the last element as the pivot
 	int i = low - 1; // Index of smaller element
 
@@ -191,7 +243,7 @@ int partition(int array[], int low, int high)
 	return i + 1;
 }
 
-void quicksort(int array[], int low, int high) 
+void quicksort(int array[], int low, int high)
 {
 	if (low < high) {
 		// Partition the array and get the pivot index
@@ -298,4 +350,179 @@ void printArray(int arr[])
 		printf("%d ", arr[i]);
 	}
 	putchar('\n');
+}
+
+
+/************************************************************ Task 4 ************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_SIZE 300
+
+// Function prototypes
+void swap(int arr[], int i, int j);
+int less(int a, int b);
+void printArray(int arr[]);
+void initArray(int arr[], int k);
+void moveElementToEnd(int[], int);
+void SelectionSort(int arr[]);
+void mergesort(int array[], int l, int r);
+void merge(int array[], int l, int m, int r);
+
+int main() {
+	srand(time(NULL));
+
+	clock_t start, end;
+	long double cpu_time_used;
+
+	long long array[MAX_SIZE];
+
+	int i = 1;
+	for (int k = 1; k < MAX_SIZE; k *= 2)
+	{
+		printf("\n Array %d \n", i++);
+		initArray(array, k);
+		SelectionSort(array);               //number of comparisons is "constant" for each array?
+		//mergesort(array, 0, MAX_SIZE-1); //same problem, recursion prints comparison value with every recursive call
+	}
+}
+
+void SelectionSort(int arr[]) // hold 1st element, search for the smallest and put it in the right place
+{
+	int i, j, min_index;
+	int comp_count = 0;
+	double cpu_time_used;
+
+	clock_t start = clock();
+	for (i = 0; i < MAX_SIZE - 1; i++) {
+		min_index = i;
+
+		for (j = i + 1; j < MAX_SIZE; j++) {
+			comp_count++;
+			if (arr[j] < arr[min_index]) {
+				min_index = j;
+			}
+		}
+		swap(arr, i, min_index);
+		clock_t end = clock();
+
+		// Check elapsed time after each iteration
+		cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+		if (cpu_time_used > 300.0) {
+			break;
+		}
+	}
+
+	printf("Selection Sort: %lf seconds, %d comparisons", cpu_time_used, comp_count);
+}
+
+/*+++++++++++++++++++++++++++++++ Merge Sort +++++++++++++++++++++++++++++++++++++++++++++++*/
+void mergesort(int array[], int l, int r) {
+	if (l >= r)
+		return;
+	int m = l + (r - l) / 2;
+	mergesort(array, l, m);
+	mergesort(array, m + 1, r);
+	merge(array, l, m, r);
+}
+
+void merge(int array[], int l, int m, int r) {
+	int i, j, k, comp_count = 0;
+	int leftSize = m - l + 1;
+	int rightSize = r - m;
+
+	int leftArray[MAX_SIZE], rightArray[MAX_SIZE];
+
+	double cpu_time_used;
+
+	//Copy data to temp arrays
+	for (i = 0; i < leftSize; i++)
+		leftArray[i] = array[l + i];
+	for (j = 0; j < rightSize; j++)
+		rightArray[j] = array[m + 1 + j];
+
+	i = 0;
+	j = 0;
+	k = l;
+
+	clock_t start = clock();
+	while ((i < leftSize) && (j < rightSize)) {
+		comp_count++;
+		if (leftArray[i] <= rightArray[j]) {
+			array[k] = leftArray[i];
+			i++;
+		}
+		else {
+			array[k] = rightArray[j];
+			j++;
+		}
+		k++;
+		clock_t end = clock();
+
+		// Check elapsed time after each iteration
+		cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+		if (cpu_time_used > 300.0) {
+			break;
+		}
+		printf("\n Merge Sort: %lf seconds, %d comparisons", cpu_time_used, comp_count);
+	}
+
+	while (i < leftSize) {
+		array[k] = leftArray[i];
+		i++;
+		k++;
+	}
+
+	while (j < rightSize) {
+		array[k] = rightArray[j];
+		j++;
+		k++;
+	}
+	// prints with every recursive call????????? need only the last value.....
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+// Helper Functions
+void initArray(int array[], int k) {
+	for (int i = 0; i < MAX_SIZE; i++) {
+		array[i] = i + 1;
+	}
+
+	if (k >= MAX_SIZE) {
+		return;
+	}
+
+	srand(time(NULL));
+	for (int i = 0; i < k; i++) {
+		int randomIndex = i + rand() % (MAX_SIZE - i);
+		moveElementToEnd(array, randomIndex);
+	}
+}
+
+void printArray(int arr[])
+{
+	for (int i = 0; i < MAX_SIZE; i++) {
+		printf("%d ", arr[i]);
+	}
+	putchar('\n');
+}
+
+void swap(int array[], int i, int j) {
+	int temp = array[i];
+	array[i] = array[j];
+	array[j] = temp;
+}
+
+int less(int x, int y)
+{
+	return (x < y) ? x : y;
+}
+
+
+void moveElementToEnd(int arr[], int randomIndex) {
+	for (int j = randomIndex; j < MAX_SIZE - 1; j++) {
+		swap(arr, j, j + 1);
+	}
 }
