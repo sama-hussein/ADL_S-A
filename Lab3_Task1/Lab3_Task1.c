@@ -80,10 +80,7 @@ int main() {
 			}
 		} while (1);
 		break;
-	case 2:
-		//Todo: Assignment 3.2
 
-		break;
 	default:
 		//Close file
 		if (fP != NULL)

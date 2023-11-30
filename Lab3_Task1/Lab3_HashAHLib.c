@@ -34,7 +34,6 @@ key: The integer for which the hash value should be calculated.
 Return value:
 Calculated hash value for parameter key.
 */
-//Todo: Assignment 2, think about other options for calculating the hash value
 int hashing(int key) {
 	// Choose one of the alternative hash functions
 	// return multiplicativeHashing(key);
@@ -85,7 +84,6 @@ Function returns the number of collisions when inserting the key-value pair.
 
 
 int putAH(sElementAH hashtableAH[MAX_ARRAY], int key, char value[MAX_STRING]) {
-	//Todo: Assignment 1.1
 	int index = hashing(key);
 	int collisions = 0;
 	int numElements = 0;
@@ -127,7 +125,6 @@ Return value:
 Function returns the value of entry with the given key or NULL if the key does not exist in the hash table.
 */
 char* getAH(sElementAH hashtableAH[MAX_ARRAY], int key) {
-	//Todo: Assignment 1.2
 	int index = hashing(key);
 
 	// Search for the key
@@ -151,7 +148,6 @@ Return value:
 none
 */
 void deleteAH(sElementAH hashtableAH[MAX_ARRAY], int key) {
-	//Todo: Assignment 1.3
 	int index = hashing(key);
 
 	// Search for the key
@@ -176,7 +172,6 @@ Return value:
 none
 */
 void printHashTableAH(sElementAH hashtableAH[MAX_ARRAY]) {
-	//Todo: Assignment 1.4
 	printf("Hash Table:\n");
 	for (int i = 0; i < numElements; i++) {
 			
