@@ -15,21 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Lab3_Task1.c">
+    <ClCompile Include="Lab3_task3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lab3_HashAHLib.c">
+    <ClCompile Include="Lab_HashCHLib.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HashAHLib.h">
+    <ClInclude Include="HashCHLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Prof_work\students.csv">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -10,11 +10,12 @@
 #define MAX_STRING 30
 #define MAX_LINE 100
 
-//Data type for address hashing
-typedef struct sElementAH {
-	int key;
-	char value[MAX_STRING];
-} sElementAH;
+// Define the data structure for an element in chained hashing
+typedef struct sElementCH {
+    int key;
+    char value[MAX_STRING];
+    struct sElementCH* next; // Pointer to the next element in the linked list
+} sElementCH;
 
 int readInt();
 int hashing(int key);
@@ -33,8 +34,7 @@ value: The value for the key that should be inserted.
 Return value:
 Function returns the number of collisions when inserting the key-value pair.
 */
-int putAH(sElementAH hashtableAH[MAX_ARRAY], int key, char value[MAX_STRING]);
-
+int putCH(sElementCH* hashtableCH[MAX_ARRAY], int key, char value[MAX_STRING]);
 /*
 Function searches for the key-value pair in the hash table having the passed key.
 
@@ -45,20 +45,7 @@ key: The key that should be searched for in the hash table.
 Return value:
 Function returns the value of entry with the given key or NULL if the key does not exist in the hash table.
 */
-char* getAH(sElementAH hashtableAH[MAX_ARRAY], int key);
-
-/*
-Function searches for the entry in the hash table having the passed key.
-If it finds an entry the function deletes it from the hash table.
-
-Input parameters:
-hashtableAH: Function gets a hash table.
-key: The key that should be searched for in the hash table and whose key-value pair should be deleted.
-
-Return value:
-none
-*/
-void deleteAH(sElementAH hashtableAH[MAX_ARRAY], int key);
+char* getCH(sElementCH* hashtableCH[MAX_ARRAY], int key);
 
 /*
 Function prints the hash table on the console.
@@ -69,8 +56,7 @@ hashtableAH: Function gets a hash table.
 Return value:
 none
 */
-void printHashTableAH(sElementAH hashtableAH[MAX_ARRAY]);
-
+void printHashTableCH(sElementCH* hashtableCH[MAX_ARRAY]);
 /*
 Function reads key-value pairs from a csv-files and stores these pairs in a hash table.
 
@@ -81,8 +67,7 @@ hashtableAH: Function gets a hash table.
 Return value:
 none
 */
-void readCSVAH(FILE* fP, sElementAH hashtableAH[MAX_ARRAY]);
-
+void readCSVAH(FILE* fP, sElementCH* hashtableCH[MAX_ARRAY]);
 
 int divisionHashing(int key);
 

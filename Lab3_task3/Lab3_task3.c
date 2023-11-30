@@ -1,6 +1,6 @@
-﻿
+
 #include <stdio.h>
-#include "HashAHLib.h"
+#include "HashCHLib.h"
 
 int main() {
 	//Variables
@@ -26,19 +26,30 @@ int main() {
 	choice = readInt();
 
 	switch (choice) {
-	case 1:;  //hashtableAH is declared immediately after the case: label. The solution to this error​ is to add a semi-colon after the label. The compiler will translate it as a blank statement and ​not throw the error.
+	case 1:;  
 
+	case 2:;
 		//Create a hash table and initialize it
-		sElementAH hashtableAH[MAX_ARRAY]; 
+		// Create a hash table and initialize it
+		sElementCH* hashtableCH[MAX_ARRAY];
 
 		for (int i = 0; i < MAX_ARRAY; i++) {
-			hashtableAH[i].key = -1;
-			strcpy_s(hashtableAH[i].value, MAX_STRING, "");
+			// Allocate memory for each element
+			hashtableCH[i] = (sElementCH*)malloc(sizeof(sElementCH));
+			if (hashtableCH[i] == NULL) {
+				// Handle memory allocation failure
+				printf("Memory allocation failed.\n");
+				exit(1);
+			}
+
+			// Initialize the key and value
+			hashtableCH[i]->key = -1;
+			strcpy_s(hashtableCH[i]->value, MAX_STRING, "");
 		}
 
 		//Read in the key-value-pairs from the csv-file and print the hash table
-		readCSVAH(fP, hashtableAH);
-		printHashTableAH(hashtableAH);
+		readCSVAH(fP, hashtableCH);
+		printHashTableCH(hashtableCH);
 
 		//User can choose what to do next
 		printf("OK, lets do Hashing using Address Hashing strategy:-)\n");
@@ -52,38 +63,27 @@ int main() {
 				key = readInt();
 				printf("\nType in the value: \n");
 				scanf_s("%s", value, MAX_STRING);
-				counter = putAH(hashtableAH, key, value);
-				printHashTableAH(hashtableAH);
+				counter = putCH(hashtableCH, key, value);
+				printHashTableCH(hashtableCH);
 				printf("There were %d collision(s).\n", counter);
 				break;
 				//Searching for an element
 			case 2:
 				printf("Type in the key: \n");
 				key = readInt();
-				valuePointer = getAH(hashtableAH, key);
+				valuePointer = getCH(hashtableCH, key);
 				if (valuePointer == NULL)
 					printf("Key not found in hashtable\n");
 				else
 					printf("Value is %s\n", valuePointer);
 				valuePointer = NULL;
 				break;
-				//Delete a key-value pair if it exists
-			case 3:
-				printf("Type in the key: \n");
-				key = readInt();
-				deleteAH(hashtableAH, key);
-				printHashTableAH(hashtableAH);
-				break;
-				//Exit program
 			default:
 				return 0;
 			}
 		} while (1);
 		break;
-	case 2:
-		//Todo: Assignment 3.2
 
-		break;
 	default:
 		//Close file
 		if (fP != NULL)

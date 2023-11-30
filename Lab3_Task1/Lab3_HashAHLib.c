@@ -1,6 +1,10 @@
+
 #pragma once
 
 #include "HashAHLib.h"
+
+int numElements = 42; // Variable to track the number of elements in the hash table
+int* p_numElements = &numElements;
 
 /*
 Function reads an integer value safely from the keyboard.
@@ -31,9 +35,37 @@ Return value:
 Calculated hash value for parameter key.
 */
 //Todo: Assignment 2, think about other options for calculating the hash value
-int hashing(int key) 
-{
-	return key % MAX_ARRAY;  //address = key mod n
+int hashing(int key) {
+	// Choose one of the alternative hash functions
+	// return multiplicativeHashing(key);
+	// return foldingHashing(key);
+	//return xorHashing(key);
+	return divisionHashing(key);
+}
+
+int divisionHashing(int key) {
+	return key % MAX_ARRAY;
+}
+
+int foldingHashing(int key) {
+	int sum = 0;
+	while (key > 0) {
+		sum += key % 1000; // Extract a three-digit portion
+		key /= 1000; // Move to the next portion
+	}
+	return sum % MAX_ARRAY;
+}
+
+int xorHashing(int key) {
+	key = (key >> 16) ^ key; // XOR upper and lower 16 bits
+	key = (key >> 8) ^ key;  // XOR upper and lower 8 bits
+	return key % MAX_ARRAY;
+}
+
+int multiplicativeHashing(int key) {
+	const double A = 0.6180339887; // Golden ratio constant
+	double fraction = key * A - (int)(key * A); // Extract fractional part
+	return (int)(MAX_ARRAY * fraction);
 }
 
 /**********************************************************************************************************************
@@ -50,27 +82,36 @@ value: The value for the key that should be inserted.
 Return value:
 Function returns the number of collisions when inserting the key-value pair.
 */
+
+
 int putAH(sElementAH hashtableAH[MAX_ARRAY], int key, char value[MAX_STRING]) {
 	//Todo: Assignment 1.1
 	int index = hashing(key);
+	int collisions = 0;
+	int numElements = 0;
 
 	// Check if the key already exists in the hash table
 	if (hashtableAH[index].key == key) {
-		// Key already exists, overwrite the value
+		// Key already exists, overwrite (update) the value
 		strcpy(hashtableAH[index].value, value);
-		return 0; // No collisions
+		return collisions; // No collisions
 	}
 	else {
 		// Handle collisions (linear probing)
 		while (hashtableAH[index].key != -1) {
 			index = (index + 1) % MAX_ARRAY;
+			collisions++;
+			// Check if the entire table has been probed
+			if (numElements >= MAX_ARRAY) {
+				printf("Hash table is full. Unable to insert key %d.\n", key);
+				return collisions;
+			}
 		}
-
 		// Insert the key-value pair
 		hashtableAH[index].key = key;
 		strcpy(hashtableAH[index].value, value);
-
-		return 1; // Number of collisions
+		(*p_numElements)++;
+		return collisions; // Number of collisions
 	}
 
 }
@@ -94,9 +135,7 @@ char* getAH(sElementAH hashtableAH[MAX_ARRAY], int key) {
 		if (hashtableAH[index].key == key) {
 			return hashtableAH[index].value; // Key found
 		}
-		index = (index + 1) % MAX_ARRAY;
 	}
-
 	return NULL; // Key not found
 }
 
@@ -123,7 +162,7 @@ void deleteAH(sElementAH hashtableAH[MAX_ARRAY], int key) {
 			hashtableAH[index].value[0] = '\0'; // Clear the value
 			return;
 		}
-		index = (index + 1) % MAX_ARRAY;
+		//index = (index + 1) % MAX_ARRAY;
 	}
 }
 
@@ -140,9 +179,15 @@ void printHashTableAH(sElementAH hashtableAH[MAX_ARRAY]) {
 	//Todo: Assignment 1.4
 	printf("Hash Table:\n");
 	for (int i = 0; i < MAX_ARRAY; i++) {
-		if (hashtableAH[i].key != -1) {
-			printf("Index %d: Key: %d, Value: %s\n", i, hashtableAH[i].key, hashtableAH[i].value);
-		}
+			
+			if (hashtableAH[i].key == -1) 
+			{ 
+				printf("Index %d: Key: empty, Value: empty\n", i); 
+			}
+			else
+			{
+				printf("Index %d: Key: %d, Value: %s\n", i, hashtableAH[i].key, hashtableAH[i].value);
+			}
 	}
 	printf("\n");
 }
@@ -170,13 +215,15 @@ void readCSVAH(FILE* fP, sElementAH hashtableAH[MAX_ARRAY]) {
 		printf("File does not exist.");
 		exit(0);
 	}
-	else
+	else {
 		// Get number of lines
 		while (!feof(fP)) {
 			char ch = fgetc(fP);
 			if (ch == '\n')
 				number++;
 		}
+		printf("Number: %d ", number);
+	}
 
 	if (fP != NULL)
 		rewind(fP);

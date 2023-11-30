@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{a4223930-75e0-47e1-8009-d35c92eaf101}</ProjectGuid>
-    <RootNamespace>Lab3Task1</RootNamespace>
+    <ProjectGuid>{3b702a9a-af09-4ff8-bfc4-ae50518c4087}</ProjectGuid>
+    <RootNamespace>Lab3task3</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,14 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Lab3_HashAHLib.c" />
-    <ClCompile Include="Lab3_Task1.c" />
+    <ClCompile Include="Lab3_task3.c" />
+    <ClCompile Include="Lab_HashCHLib.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HashAHLib.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Prof_work\students.csv" />
+    <ClInclude Include="HashCHLib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
