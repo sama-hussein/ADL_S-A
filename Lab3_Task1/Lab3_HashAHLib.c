@@ -3,7 +3,7 @@
 
 #include "HashAHLib.h"
 
-int numElements = 42; // Variable to track the number of elements in the hash table
+int numElements = 0; // Variable to track the number of elements in the hash table
 int* p_numElements = &numElements;
 
 /*
@@ -178,15 +178,15 @@ none
 void printHashTableAH(sElementAH hashtableAH[MAX_ARRAY]) {
 	//Todo: Assignment 1.4
 	printf("Hash Table:\n");
-	for (int i = 0; i < MAX_ARRAY; i++) {
+	for (int i = 0; i < numElements; i++) {
 			
 			if (hashtableAH[i].key == -1) 
 			{ 
-				printf("Index %d: Key: empty, Value: empty\n", i); 
+				printf("Index %d: Key: empty, Value: empty\n", i+1); 
 			}
 			else
 			{
-				printf("Index %d: Key: %d, Value: %s\n", i, hashtableAH[i].key, hashtableAH[i].value);
+				printf("Index %d: Key: %d, Value: %s\n", i+1, hashtableAH[i].key, hashtableAH[i].value);
 			}
 	}
 	printf("\n");
@@ -202,6 +202,7 @@ hashtableAH: Function gets a hash table.
 Return value:
 none
 */
+
 void readCSVAH(FILE* fP, sElementAH hashtableAH[MAX_ARRAY]) {
 	int number = 0;
 	char buffer[MAX_LINE];
@@ -222,7 +223,7 @@ void readCSVAH(FILE* fP, sElementAH hashtableAH[MAX_ARRAY]) {
 			if (ch == '\n')
 				number++;
 		}
-		printf("Number: %d ", number);
+		printf("Number of students' names: %d ", number);
 	}
 
 	if (fP != NULL)
@@ -245,3 +246,5 @@ void readCSVAH(FILE* fP, sElementAH hashtableAH[MAX_ARRAY]) {
 
 	return;
 }
+
+
