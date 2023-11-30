@@ -1,9 +1,6 @@
 
 #include "HashCHLib.h"
 
-int numElements = 42; // Variable to track the number of elements in the hash table
-int* p_numElements = &numElements;
-
 /*
 Function reads an integer value safely from the keyboard.
 

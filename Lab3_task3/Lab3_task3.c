@@ -54,7 +54,7 @@ int main() {
 		//User can choose what to do next
 		printf("OK, lets do Hashing using Address Hashing strategy:-)\n");
 		do {
-			printf("What do you like to do?\n1: Adding new element\n2: Searching for an element\n3: Delete key\nAny other choice: exit program\n");
+			printf("What do you like to do?\n1: Adding new element\n2: Searching for an element\nAny other choice: exit program\n");
 			choice = readInt();
 			switch (choice) {
 				//Adding a new element to the hash table
