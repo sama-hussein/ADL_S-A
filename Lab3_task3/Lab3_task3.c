@@ -14,7 +14,8 @@ int main() {
 	errno_t err;
 	FILE* fP = NULL;
 	err = fopen_s(&fP, "students.csv", "r");
-	if ((err != 0) || (fP == NULL)) {
+	if ((err != 0) || (fP == NULL)) 
+	{
 		//perror("Error");		// prints the error
 		printf("CSV file could not be opend.\n");
 		exit(1);
