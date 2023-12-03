@@ -58,7 +58,7 @@ int main() {
 			printf("What do you like to do?\n1: Adding new element\n2: Searching for an element\nAny other choice: exit program\n");
 			choice = readInt();
 			switch (choice) {
-				//Adding a new element to the hash table
+			//Adding a new element to the hash table
 			case 1:
 				printf("Type in the key: \n");
 				key = readInt();
@@ -68,7 +68,7 @@ int main() {
 				printHashTableCH(hashtableCH);
 				printf("There were %d collision(s).\n", counter);
 				break;
-				//Searching for an element
+			//Searching for an element
 			case 2:
 				printf("Type in the key: \n");
 				key = readInt();
